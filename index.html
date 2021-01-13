@@ -1,33 +1,3 @@
-<!-- <!DOCTYPE html>
-<html>
-    <head>
-        <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-        
-    </head>
-  <body style="margin: 0px; overflow: hidden">
-    <a-scene
-      embedded
-      arjs
-      renderer="logarithmicDepthBuffer:true;"
-      vr-mode-ui="enabled:false"
-      gesture-detector
-      id="scene"
-    >
-      <a-marker preset="hiro">
-        <a-entity
-          position="0 0.5 0"
-          scale="0.05 0.05 0.05"
-          gltf-model="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
-        >
-        </a-entity>
-      </a-marker>
-      <a-entity camera></a-entity>
-    </a-scene>
-  </body>
-</html>
- -->
-
 <!DOCTYPE html>
 
 <html>
@@ -43,23 +13,21 @@
     <script src="gesture-handler.js"></script>
   </head>
 
-  <body>
+  <body class="body">
+    <div class="buttons">
+      <button class="button" id="back">&#139;</button>
+      <button class="button" id="next">&#155;</button>
+    </div>
+
+    <div class="model-count"></div>
     <a-scene
-      arjs
+      arjs="debugUIEnabled:false;"
       embedded
       renderer="logarithmicDepthBuffer: true;"
       vr-mode-ui="enabled: false"
       gesture-detector
       id="scene"
     >
-      <a-assets>
-        <a-asset-item
-          id="bowser"
-          src="https://cdn.glitch.com/06bd98b4-97ee-4c07-a546-fe39ca205034%2Fbowser.glb"
-        >
-        </a-asset-item>
-      </a-assets>
-
       <a-marker
         preset="hiro"
         raycaster="objects: .clickable"
@@ -68,10 +36,10 @@
         id="markerA"
       >
         <a-entity
-          id="bowser-model"
-          gltf-model="#bowser"
+          id="entity"
+          gltf-model="models/model1/scene.gltf"
           position="0 0 0"
-          scale="0.05 0.05 0.05"
+          scale="0.006 0.006 0.006"
           class="clickable"
           gesture-handler
         >
@@ -80,4 +48,68 @@
       <a-entity camera></a-entity>
     </a-scene>
   </body>
+
+  <script>
+    /* variables */
+    let entity = document.querySelector("#entity");
+    let back = document.querySelector("#back");
+    let next = document.querySelector("#next");
+    let modelCount = document.querySelector(".model-count");
+    let count = 0;
+
+    let models = [
+      {
+        model: "models/model1/scene.gltf",
+        scale: "0.006 0.006 0.006",
+      },
+      {
+        model: "models/model2/scene.gltf",
+        scale: "0.006 0.006 0.006",
+      },
+      {
+        model: "models/model3/scene.gltf",
+        scale: "0.1 0.1 0.1",
+      },
+    ];
+
+    function backModel() {
+      if (count <= 0) {
+        count = models.length;
+      }
+      count--;
+      modelCount.innerHTML = ` ${count + 1} de ${models.length}`;
+      console.log(count);
+      return setModel();
+    }
+
+    function nextModel() {
+      if (count >= models.length - 1) {
+        count = -1;
+      }
+      count++;
+      modelCount.innerHTML = ` ${count + 1} de ${models.length}`;
+      console.log(count);
+
+      return setModel();
+    }
+
+    /* Retorna el modelo */
+
+    function setModel() {
+      return (
+        entity.setAttribute("gltf-model", `${models[count].model}`),
+        entity.setAttribute("scale", `${models[count].scale}`),
+        entity.setAttribute("position", "0 0 0"),
+        entity.setAttribute("class", "clickable"),
+        entity.setAttribute("gesture-handler")
+      );
+    }
+
+    back.addEventListener("click", backModel);
+    next.addEventListener("click", nextModel);
+
+    /* reject.innerHTML = `${countReject} Rechazados`;
+    acepted.innerHTML = `${countAcepted} Aceptados`; */
+    modelCount.innerHTML = ` ${count + 1} de ${models.length}`;
+  </script>
 </html>
