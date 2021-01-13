@@ -1,0 +1,11 @@
+{
+  "liveServer.settings.port": 5501,
+  "liveServer.settings.root": "/",
+  "liveServer.settings.CustomBrowser": "microsoft-edge",
+  "liveServer.settings.https": {
+    "enable": true,
+    "cert": "E:/Documentos/Proyectos/arjs-example/https/localhost.pem",
+    "key": "E:/Documentos/Proyectos/arjs-example/https/localhost.key",
+    "passphrase": "prueba"
+  }
+}
